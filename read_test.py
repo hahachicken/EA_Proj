@@ -25,5 +25,5 @@ def Print_Matrix(matrix):
     return
 
 if __name__ == "__main__":
-    mat = read("25.in", True)
+    mat = read("in/5.in", True)
     Print_Matrix(mat)
