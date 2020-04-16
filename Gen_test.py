@@ -19,7 +19,7 @@ def WriteMat(mat, filename):
     return
 
 if __name__ == "__main__":
-    size = [25,50,100]
+    size = [5,25,50,100]
     for i in size:
         mat = Gen_Matrix1(i)
         WriteMat(mat, '{}.in'.format(i))
