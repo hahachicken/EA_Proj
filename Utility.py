@@ -71,3 +71,6 @@ def isTree(matrix):
             return False
 
     return True
+
+def Val(matrix):
+    '''precheck if matrix is a valid T
