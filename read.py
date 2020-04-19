@@ -1,5 +1,6 @@
 import string
 import numpy
+from Utility import *
 
 def read(filename, if_matrix = True):
     '''
@@ -23,7 +24,7 @@ def read(filename, if_matrix = True):
     else:
         matrix =[]
         for vs in raw_matrix:
-            merged_list = tuple(zip(list(range(n)), vs)) 
+            merged_list = tuple(zip(list(range(n)), vs))
             filter_iterator = filter(lambda d: d[1]>0, merged_list)
             matrix.append(list(filter_iterator))
         return matrix
@@ -46,7 +47,10 @@ def read_p1():
         Print_Matrix(mat2)
 
 def read_self_test():
-    mat = read("self_test/1.in", False)
+    mat = read("self_test/1.in", True)
+    print(isTree(mat))
+    Print_Matrix(mat)
+    DFS(mat, 0, lambda x:0, lambda x:0)
     Print_Matrix(mat)
 
 if __name__ == "__main__":
