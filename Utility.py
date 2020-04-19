@@ -1,19 +1,18 @@
 from collections import *
 
-def DFSUtil(v, visited, f_v, f_e, matrix, g):
-
-    visited[v] = True
-    f_v(v)
-    # Recur for all the vertices
-    # adjacent to this vertex
-    for i in g[v]:
-        if visited[i] == False:
-            matrix[v][i] = f_e(matrix[v][i])
-            matrix[i][v] = matrix[v][i]
-            DFSUtil(i, visited, f_v, f_e, matrix, g)
-
 def DFS(matrix, v, f_v, f_e):
     '''run DFS on matrix staring at v, apply f_v to visited vertex, f_e to visitied edge'''
+    def DFSUtil(v, visited, f_v, f_e, matrix, g):
+        visited[v] = True
+        f_v(v)
+        # Recur for all the vertices
+        # adjacent to this vertex
+        for i in g[v]:
+            if visited[i] == False:
+                matrix[v][i] = f_e(matrix[v][i])
+                matrix[i][v] = matrix[v][i]
+                DFSUtil(i, visited, f_v, f_e, matrix, g)
+
     #generate the graph
     g = defaultdict(list)
     for i in range(len(matrix)):
@@ -24,31 +23,30 @@ def DFS(matrix, v, f_v, f_e):
     visited = [False] * (len(g))
     DFSUtil(v, visited, f_v, f_e, matrix, g)
 
-def isCyclicUtil(g, v, visited, parent):
-
-    # Mark current node as visited
-    visited[v] = True
-
-    # Recur for all the vertices adjacent
-    # for this vertex
-    for i in g[v]:
-        # If an adjacent is not visited,
-        # then recur for that adjacent
-        if visited[i] == False:
-            if isCyclicUtil(g, i, visited, v) == True:
-                return True
-
-        # If an adjacent is visited and not
-        # parent of current vertex, then there
-        # is a cycle.
-        elif i != parent:
-            return True
-
-    return False
 
 # Returns true if the graph is a tree,
 # else false.
 def isTree(matrix):
+    def isCyclicUtil(g, v, visited, parent):
+        # Mark current node as visited
+        visited[v] = True
+
+        # Recur for all the vertices adjacent
+        # for this vertex
+        for i in g[v]:
+            # If an adjacent is not visited,
+            # then recur for that adjacent
+            if visited[i] == False:
+                if isCyclicUtil(g, i, visited, v) == True:
+                    return True
+
+            # If an adjacent is visited and not
+            # parent of current vertex, then there
+            # is a cycle.
+            elif i != parent:
+                return True
+
+        return False
     # Mark all the vertices as not visited
     # and not part of recursion stack
     g = defaultdict(list)

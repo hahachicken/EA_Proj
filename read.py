@@ -1,6 +1,6 @@
 import string
 import numpy
-from Utility import *
+from utility import *
 
 def read(filename, if_matrix = True):
     '''
