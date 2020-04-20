@@ -1,6 +1,6 @@
 import networkx as nx
 from parse import read_input_file, write_output_file
-from utilty import is_valid_network, average_pairwise_distance
+from utility import is_valid_network, average_pairwise_distance
 import sys
 
 
