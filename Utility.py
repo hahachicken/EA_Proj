@@ -1,76 +1,96 @@
-from collections import *
-
-def DFS(matrix, v, f_v, f_e):
-    '''run DFS on matrix staring at v, apply f_v to visited vertex, f_e to visitied edge'''
-    def DFSUtil(v, visited, f_v, f_e, matrix, g):
-        visited[v] = True
-        f_v(v)
-        # Recur for all the vertices
-        # adjacent to this vertex
-        for i in g[v]:
-            if visited[i] == False:
-                matrix[v][i] = f_e(matrix[v][i])
-                matrix[i][v] = matrix[v][i]
-                DFSUtil(i, visited, f_v, f_e, matrix, g)
-
-    #generate the graph
-    g = defaultdict(list)
-    for i in range(len(matrix)):
-        for j in range(len(matrix)):
-            if matrix[i][j] != 0:
-                g[i].append(j)
-
-    visited = [False] * (len(g))
-    DFSUtil(v, visited, f_v, f_e, matrix, g)
+import networkx as nx
+from collections import defaultdict
 
 
-# Returns true if the graph is a tree,
-# else false.
-def isTree(matrix):
-    def isCyclicUtil(g, v, visited, parent):
-        # Mark current node as visited
-        visited[v] = True
+def is_valid_network(G, T):
+    """
+    Checks whether T is a valid network of G.
+    Args:
+        G: networkx.Graph
+        T: networkx.Graph
 
-        # Recur for all the vertices adjacent
-        # for this vertex
-        for i in g[v]:
-            # If an adjacent is not visited,
-            # then recur for that adjacent
-            if visited[i] == False:
-                if isCyclicUtil(g, i, visited, v) == True:
-                    return True
+    Returns:
+        bool: whether T is a valid network
+    """
 
-            # If an adjacent is visited and not
-            # parent of current vertex, then there
-            # is a cycle.
-            elif i != parent:
-                return True
+    return nx.is_tree(T) and nx.is_dominating_set(G, T.nodes)
 
-        return False
-    # Mark all the vertices as not visited
-    # and not part of recursion stack
-    g = defaultdict(list)
-    for i in range(len(matrix)):
-        for j in range(len(matrix)):
-            if matrix[i][j] != 0:
-                g[i].append(j)
-    visited = [False] * (len(g))
 
-    # The call to isCyclicUtil serves multiple
-    # purposes. It returns true if graph reachable
-    # from vertex 0 is cyclcic. It also marks
-    # all vertices reachable from 0.
-    if isCyclicUtil(g, 0, visited, -1) == True:
-        return False
+def average_pairwise_distance(T):
+    """
+    Computes the average pairwise distance between vertices in T.
+    This is what we want to minimize!
 
-    # If we find a vertex which is not reachable
-    # from 0 (not marked by isCyclicUtil(),
-    # then we return false
-    for i in range(len(g)):
-        if visited[i] == False:
-            return False
+    Note that this function is a little naive, i.e. there are much
+    faster ways to compute the average pairwise distance in a tree.
+    Feel free to write your own!
 
-    return True
+    Args:
+        T: networkx.Graph, a tree
 
-def Val(matrix):
-    '''precheck if matrix is a valid T
+    Returns:
+        double: the average pairwise distance
+    """
+    path_lengths = nx.all_pairs_dijkstra_path_length(T)
+    total_pairwise_distance = sum([sum(length[1].values()) for length in path_lengths])
+    return total_pairwise_distance / (len(T) * (len(T) - 1))
+
+
+def average_pairwise_distance_fast(T):
+    """Calculates the average pairwise distance for a tree in linear time.
+
+    Since there is always unique path between nodes in a tree, each edge in the
+    tree is used in all of the paths from the connected component on one side
+    of the tree to the other. So each edge contributes to the total pairwise cost
+    in the following way: if the size of the connected components that are
+    created from removing an edge e are A and B, then the total pairwise distance
+    cost for an edge is 2 * A * B * w(e) = (# of paths that use that edge) * w(e).
+    We multiply by two to consider both directions that paths can take on an
+    undirected edge.
+
+    Since each edge connects a subtree to the rest of a tree, we can run DFS
+    to compute the sizes of all of the subtrees, and iterate through all the edges
+    and sum the pairwise distance costs for each edge and divide by the total
+    number of pairs.
+
+    This is very similar to Q7 on MT1.
+
+    h/t to Noah Kingdon for the algorithm.
+    """
+    if not nx.is_connected(T):
+        raise ValueError("Tree must be connected")
+
+    subtree_sizes = {}
+    marked = defaultdict(bool)
+    # store child parent relationships for each edge, because the components
+    # created when removing an edge are the child subtree and the rest of the vertices
+    root = list(T.nodes)[0];
+    
+    child_parent_pairs = [(root, root)]
+
+    def calculate_subtree_sizes(u):
+        """Iterates through the tree to compute all subtree sizes in linear time
+
+        Args:
+            u: the root of the subtree to start the DFS
+
+        """
+        unmarked_neighbors = filter(lambda v: not marked[v], T.neighbors(u))
+        marked[u] = True
+        size = 0
+        for v in unmarked_neighbors:
+            child_parent_pairs.append((v, u))
+            calculate_subtree_sizes(v)
+            size += subtree_sizes[v]
+        subtree_sizes[u] = size + 1
+        return subtree_sizes[u]
+
+    calculate_subtree_sizes(root)  # any vertex can be the root of a tree
+
+    cost = 0
+    for c, p in child_parent_pairs:
+        if c != p:
+            a, b = subtree_sizes[c], len(T.nodes) - subtree_sizes[c]
+            w = T[c][p]["weight"]
+            cost += 2 * a * b * w
+    return cost / (len(T) * (len(T) - 1))
