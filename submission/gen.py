@@ -33,7 +33,7 @@ def p1_gen():
     size = [25,50,100]
     for i in size:
         mat = gen_matrix(i)
-        write_mat(mat, 'p1/{}.in'.format(i))
+        write_mat(mat, 'submission/{}.in'.format(i))
 
 def self_test_gen():
     size = 15
@@ -42,5 +42,5 @@ def self_test_gen():
         write_mat(mat, 'self_test/{}.in'.format(i))
 
 if __name__ == "__main__":
-    p1_gen()
+    #p1_gen()
     self_test_gen()
