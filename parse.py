@@ -2,9 +2,7 @@ import re
 import os
 
 import networkx as nx
-
-import utils
-
+import utility
 
 def validate_file(path):
     """File must not exceed 100KB and must contain only numbers and spaces"""
@@ -16,7 +14,6 @@ def validate_file(path):
             print(f"{path} contains characters that are not numbers and spaces")
             return False
     return True
-
 
 def read_input_file(path, max_size=None):
     """
@@ -53,15 +50,13 @@ def read_input_file(path, max_size=None):
 
         return G
 
-
-def write_input_file(G, path):
+def write_input_file(path, G):
     with open(path, "w") as fo:
         n = len(G)
         lines = nx.generate_edgelist(G, data=["weight"])
         fo.write(str(n) + "\n")
         fo.writelines("\n".join(lines))
         fo.close()
-
 
 def read_output_file(path, G):
     """
@@ -99,12 +94,11 @@ def read_output_file(path, G):
             w["weight"] = edge_in_G["weight"]
         T.add_nodes_from(nodes)
 
-        assert utils.is_valid_network(G, T)
+        assert utility.is_valid_network(G, T)
 
         return T
 
-
-def write_output_file(T, path):
+def write_output_file(path, T):
     with open(path, "w") as fo:
         fo.write(" ".join(map(str, T.nodes)) + "\n")
         lines = nx.generate_edgelist(T, data=False)
