@@ -56,7 +56,7 @@ def deletenode(T,O):
 
 
 
-def genST(G):
+def genST(G, times = 100):
     output = []
     outgraphs = []
     List = {G}
@@ -65,7 +65,7 @@ def genST(G):
     List = {G}
     G.graph['MST'] = KruskalMST(G)
     MST = {tuple(G.graph['MST'])}
-    while len(MST) != 0 :
+    while len(MST) != 0 and len(output) < times:
         temp = min(List, key = lambda g: g.graph['cost'])
         output.append(temp.graph['MST'])
         List.remove(temp)
