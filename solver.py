@@ -59,7 +59,6 @@ def deletenode(T,O):
             newcost = average_pairwise_distance_fast(G)
             if newcost < oldcost:
                 P = deletenode(G,O)
-            else:
                 return P
     return P
 
@@ -207,9 +206,27 @@ def find(G, i):
 # Usage: python3 solver.py test.in
 
 if __name__ == '__main__':
-    path = "self_test/2.in"
-    G = read_input_file(path)
-    print("Input success!")
-    T = solve(G, 50)
-    print("Average  pairwise distance: {}".format(average_pairwise_distance_fast(T)))
-    write_output_file('test.out',T)
+    l = 2
+    for i in range(1, 401):
+        path = "inputs/large-{}.in".format(i)
+        G = read_input_file(path)
+        print("Inport {} success!".format(path))
+        T = solve(G, l)
+        #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
+        write_output_file('outputs/large-{}.out'.format(i),T)
+
+    for i in range(1, 304):
+        path = "inputs/medium-{}.in".format(i)
+        G = read_input_file(path)
+        print("Inport {} success!".format(path))
+        T = solve(G, l)
+        #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
+        write_output_file('outputs/medium-{}.out'.format(i),T)
+
+    for i in range(1, 304):
+        path = "inputs/small-{}.in".format(i)
+        G = read_input_file(path)
+        print("Inport {} success!".format(path))
+        T = solve(G,l)
+        #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
+        write_output_file('outputs/small-{}.out'.format(i),T)
