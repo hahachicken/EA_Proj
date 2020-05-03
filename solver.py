@@ -34,7 +34,7 @@ def solve(G, times = 100):
         if i < times:
             i += 1
             result += [deletenode(ST,G)]
-    print("min deo-tree gen!")
+    print("MDT gen!")
     result = sorted(result, key=lambda G: average_pairwise_distance_fast(G))
     #t = time.time() - start_time
     #print("total time takes:%d"%t)
@@ -205,7 +205,7 @@ def find(G, i):
 
 # Usage: python3 solver.py
 
-def solver_multi_threading(task_set, deepth = 10):
+def solver_multi_threading(task_set, deepth = 100):
     for i in task_set[0]:
         path = "inputs/large-{}.in".format(i)
         G = read_input_file(path)
