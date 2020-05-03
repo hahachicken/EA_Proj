@@ -27,6 +27,7 @@ def solve(G, times = 100):
             weight += ST.edges[edge]['weight']
         print(ST.edges)
         print(weight)
+        print(nx.is_tree(ST))
     print("__________________________________")
     for ST in STs:
         print(ST.edges)
@@ -79,6 +80,8 @@ def genST(G, times = 100):
         List.remove(temp)
         MST.remove(tuple(temp.graph['MST']))
         Partition(temp, List, MST)
+
+
     for edges in output:
         P = nx.Graph()
         for edge in edges:
@@ -86,8 +89,6 @@ def genST(G, times = 100):
             P.edges[edge[0], edge[1]]['weight'] = G.edges[edge[0], edge[1]]['weight']
         outgraphs += [P]
     return outgraphs
-
-
 
 def Partition(P, List, MST):
     P1 = nx.Graph()
@@ -110,27 +111,7 @@ def Partition(P, List, MST):
                 MST.add(tuple(MSTP1))
             P1 = P2.copy()
 
-def union(G, x, y):
-    xroot = find(G, x)
-    yroot = find(G, y)
 
-    # Attach smaller rank tree under root of
-    # high rank tree (Union by Rank)
-    if G.nodes[xroot]['rank'] < G.nodes[yroot]['rank']:
-        G.nodes[xroot]['parent'] = yroot
-    elif G.nodes[xroot]['rank'] > G.nodes[yroot]['rank']:
-        G.nodes[yroot]['parent'] = xroot
-
-    # If ranks are same, then make one as root
-    # and increment its rank by one
-    else :
-        G.nodes[yroot]['parent'] = xroot
-        G.nodes[xroot]['rank'] += 1
-
-def find(G, i):
-    if G.nodes[i]['parent'] == i:
-        return i
-    return find(G, G.nodes[i]['parent'])
 
 def KruskalMST(P):
     G = P.copy()
@@ -141,8 +122,16 @@ def KruskalMST(P):
     i = 0 # An index variable, used for sorted edges
     e = 0 # An index variable, used for result[]
 
+
+    for node in G.nodes:
+        G.nodes[node]['parent'] = node
+        G.nodes[node]['rank'] = 0
+
     for u, v in G.edges:
         if G.edges[u, v]['property'] == 'included':
+            x = find(G, u)
+            y = find(G ,v)
+            union(G, x, y)
             result.append((u, v))
             e += 1
         elif G.edges[u, v]['property'] == 'excluded':
@@ -159,9 +148,7 @@ def KruskalMST(P):
 
     sortedges = sorted( normal_edges, key=lambda edge: G.edges[edge]['weight'])
     # Create V subsets with single elements
-    for node in G.nodes:
-        G.nodes[node]['parent'] = node
-        G.nodes[node]['rank'] = 0
+
 
 
     # Number of edges to be taken is equal to V-1
@@ -193,12 +180,34 @@ def KruskalMST(P):
 
 
 
+def union(G, x, y):
+    xroot = find(G, x)
+    yroot = find(G, y)
+
+    # Attach smaller rank tree under root of
+    # high rank tree (Union by Rank)
+    if G.nodes[xroot]['rank'] < G.nodes[yroot]['rank']:
+        G.nodes[xroot]['parent'] = yroot
+    elif G.nodes[xroot]['rank'] > G.nodes[yroot]['rank']:
+        G.nodes[yroot]['parent'] = xroot
+
+    # If ranks are same, then make one as root
+    # and increment its rank by one
+    else :
+        G.nodes[yroot]['parent'] = xroot
+        G.nodes[xroot]['rank'] += 1
+
+def find(G, i):
+    if G.nodes[i]['parent'] == i:
+        return i
+    return find(G, G.nodes[i]['parent'])
+
 # Here's an example of how to run your solver.
 
 # Usage: python3 solver.py test.in
 
 if __name__ == '__main__':
-    path = "self_test/1.in"
+    path = "self_test/2.in"
     G = read_input_file(path)
     print("Input success!")
     T = solve(G, 50)
