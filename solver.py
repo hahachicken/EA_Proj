@@ -22,7 +22,11 @@ def solve(G, times = 100):
     i = 0
 
     for ST in STs:
+        weight = 0
+        for edge in ST.edges:
+            weight += ST.edges[edge]['weight']
         print(ST.edges)
+        print(weight)
     print("__________________________________")
     for ST in STs:
         print(ST.edges)
@@ -64,7 +68,6 @@ def deletenode(T,O):
 def genST(G, times = 100):
     output = []
     outgraphs = []
-    List = {G}
     for u, v in G.edges:
         G.edges[u, v]['property'] = 'normal'
     List = {G}
@@ -195,9 +198,9 @@ def KruskalMST(P):
 # Usage: python3 solver.py test.in
 
 if __name__ == '__main__':
-    path = "self_test/0.in"
+    path = "self_test/1.in"
     G = read_input_file(path)
     print("Input success!")
-    T = solve(G, 2)
+    T = solve(G, 50)
     print("Average  pairwise distance: {}".format(average_pairwise_distance_fast(T)))
     write_output_file('test.out',T)
