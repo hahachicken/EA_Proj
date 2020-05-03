@@ -17,19 +17,24 @@ def solve(G, times = 100):
     start_time = time.time()
 
     result = []
-    STs = genST(G)
+    STs = genST(G,times)
     print("STs gen!")
     i = 0
+
     for ST in STs:
+        print(ST.edges)
+    print("__________________________________")
+    for ST in STs:
+        print(ST.edges)
         if i < times:
             i += 1
             result += [deletenode(ST,G)]
     print("min deo-tree gen!")
-#    result = sorted(result, key=lambda G: average_pairwise_distance_fast(G))
-    result_val = [average_pairwise_distance_fast(G) for G in result]
+    result = sorted(result, key=lambda G: average_pairwise_distance_fast(G))
     t = time.time() - start_time
     print("total time takes:%d"%t)
-    return max(result_val)
+    print(result[0])
+    return average_pairwise_distance_fast(result[0])
 
 
 
@@ -194,6 +199,5 @@ if __name__ == '__main__':
     G = read_input_file(path)
     print("Input success!")
     T = solve(G, 2)
-    assert is_valid_network(G, T)
-    print("Average  pairwise distance: {}".format(average_pairwise_distance(T)))
+    print("Average  pairwise distance: {}".format(T)
     write_output_file(T, 'out/test.out')
