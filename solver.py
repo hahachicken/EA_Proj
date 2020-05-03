@@ -205,7 +205,7 @@ def find(G, i):
 
 # Usage: python3 solver.py
 
-def solver_multi_threading(task_set, deepth = 2):
+def solver_multi_threading(task_set, deepth = 10):
     for i in task_set[0]:
         path = "inputs/large-{}.in".format(i)
         G = read_input_file(path)
@@ -234,20 +234,21 @@ def solver_multi_threading(task_set, deepth = 2):
 
 
 if __name__ == '__main__':
-    l = 2
     cores = multiprocessing.cpu_count()
     pool = multiprocessing.Pool(processes=cores)
 
     large_partition = [[]for _ in range(cores)]
-    for i in range(1,17):
+    for i in range(1,401):
         large_partition[i%cores].append(i)
     
     med_partition = [[]for _ in range(cores)]
-    for i in range(1,17):
+    for i in range(1,304):
         med_partition[i%cores].append(i)
     
     small_partition = [[] for _ in range(cores)]
-    for i in range(1,17):
+    for i in range(1,304):
+        if i == 254:
+            continue
         small_partition[i%cores].append(i)
     
     task = []
