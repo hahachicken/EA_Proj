@@ -2,7 +2,7 @@ import networkx as nx
 from parse import read_input_file, write_output_file
 from utility import is_valid_network, average_pairwise_distance, average_pairwise_distance_fast
 import sys
-
+import time
 
 def solve(G):
     """
@@ -14,11 +14,16 @@ def solve(G):
     """
 
     # TODO: your code here!
+    start_time = time.time()
+
     result = []
     STs = genST(G)
     for ST in STs:
         result += [deletenode(ST,G)]
     result = sorted(result, key=lambda G: average_pairwise_distance_fast(G))
+
+    t = time.time() - start_time
+    print("total time takes:%d"%t)
     return result[0]
 
 
