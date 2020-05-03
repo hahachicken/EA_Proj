@@ -58,6 +58,9 @@ def average_pairwise_distance_fast(T):
 
     h/t to Noah Kingdon for the algorithm.
     """
+    if len(T) == 1:
+        return 0
+        
     if not nx.is_connected(T):
         raise ValueError("Tree must be connected")
 

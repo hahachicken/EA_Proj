@@ -3,6 +3,7 @@ from parse import read_input_file, write_output_file
 from utility import is_valid_network, average_pairwise_distance, average_pairwise_distance_fast
 import sys
 import time
+import threading
 
 def solve(G, times = 100):
     """
@@ -14,7 +15,7 @@ def solve(G, times = 100):
     """
 
     # TODO: your code here!
-    start_time = time.time()
+    #start_time = time.time()
 
     result = []
     STs = genST(G,times)
@@ -25,20 +26,19 @@ def solve(G, times = 100):
         weight = 0
         for edge in ST.edges:
             weight += ST.edges[edge]['weight']
-        print(ST.edges)
-        print(weight)
-        print(nx.is_tree(ST))
-    print("__________________________________")
+        #print(ST.edges)
+        #print(weight)
+        #print(nx.is_tree(ST))
+    #print("__________________________________")
     for ST in STs:
-        print(ST.edges)
         if i < times:
             i += 1
             result += [deletenode(ST,G)]
     print("min deo-tree gen!")
     result = sorted(result, key=lambda G: average_pairwise_distance_fast(G))
-    t = time.time() - start_time
-    print("total time takes:%d"%t)
-    print(result[0])
+    #t = time.time() - start_time
+    #print("total time takes:%d"%t)
+    #print(result[0])
     return result[0]
 
 
@@ -203,30 +203,60 @@ def find(G, i):
 
 # Here's an example of how to run your solver.
 
-# Usage: python3 solver.py test.in
+# Usage: python3 solver.py
 
-if __name__ == '__main__':
-    l = 2
-    for i in range(1, 401):
+def solver_multi_threading(large_set, med_set, small_set, deepth = 2):
+    for i in large_set:
         path = "inputs/large-{}.in".format(i)
         G = read_input_file(path)
         print("Inport {} success!".format(path))
-        T = solve(G, l)
+        T = solve(G, deepth)
         #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
         write_output_file('outputs/large-{}.out'.format(i),T)
 
-    for i in range(1, 304):
+    for i in med_set:
         path = "inputs/medium-{}.in".format(i)
         G = read_input_file(path)
         print("Inport {} success!".format(path))
         T = solve(G, l)
         #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
         write_output_file('outputs/medium-{}.out'.format(i),T)
-
-    for i in range(1, 304):
+    
+    for i in small_set:
         path = "inputs/small-{}.in".format(i)
         G = read_input_file(path)
         print("Inport {} success!".format(path))
         T = solve(G,l)
         #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
         write_output_file('outputs/small-{}.out'.format(i),T)
+
+
+
+
+if __name__ == '__main__':
+    l = 2
+    num_threads = 8
+    
+    large_partition = [[]for _ in range(num_threads)]
+    for i in range(1,17):
+        large_partition[i%num_threads].append(i)
+    
+    med_partition = [[]for _ in range(num_threads)]
+    for i in range(1,17):
+        med_partition[i%num_threads].append(i)
+    
+    small_partition = [[] for _ in range(num_threads)]
+    for i in range(1,17):
+        small_partition[i%num_threads].append(i)
+    
+    thread_pool = []
+    for i in range(num_threads):
+        thread_pool.append(
+            threading.Thread(target = solver_multi_threading, args = [large_partition[i], med_partition[i], small_partition[i]], name='th-{}'.format(i))
+            )
+
+    for th in thread_pool:
+        th.start()
+
+    for th in thread_pool:
+        th.join()
