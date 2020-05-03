@@ -65,7 +65,7 @@ def deletenode(T,O):
 
 
 
-def genST(G, times = 100):
+def genST(G, times):
     output = []
     outgraphs = []
     for u, v in G.edges:
@@ -73,12 +73,20 @@ def genST(G, times = 100):
     List = {G}
     G.graph['MST'] = KruskalMST(G)
     MST = {tuple(G.graph['MST'])}
-    while len(MST) != 0 and len(output) < times:
-        temp = min(List, key = lambda g: g.graph['cost'])
-        output.append(temp.graph['MST'])
-        List.remove(temp)
-        MST.remove(tuple(temp.graph['MST']))
-        Partition(temp, List, MST)
+    if times == -1:
+        while len(MST) != 0:
+            temp = min(List, key = lambda g: g.graph['cost'])
+            output.append(temp.graph['MST'])
+            List.remove(temp)
+            MST.remove(tuple(temp.graph['MST']))
+            Partition(temp, List, MST)
+    else:
+        while len(MST) != 0 and len(output) < times:
+            temp = min(List, key = lambda g: g.graph['cost'])
+            output.append(temp.graph['MST'])
+            List.remove(temp)
+            MST.remove(tuple(temp.graph['MST']))
+            Partition(temp, List, MST)
 
 
     for edges in output:
@@ -205,7 +213,7 @@ def find(G, i):
 
 # Usage: python3 solver.py
 
-def solver_multi_threading(task_set, deepth = 100):
+def solver_multi_threading(task_set, deepth = 1000):
     for i in task_set[0]:
         path = "inputs/large-{}.in".format(i)
         G = read_input_file(path)
@@ -234,6 +242,7 @@ def solver_multi_threading(task_set, deepth = 100):
 
 
 if __name__ == '__main__':
+    type = sys.argv[1]
     cores = multiprocessing.cpu_count()
     pool = multiprocessing.Pool(processes=cores)
 
@@ -252,6 +261,19 @@ if __name__ == '__main__':
         small_partition[i%cores].append(i)
     
     task = []
-    for i in range(cores):
-        task.append((large_partition[i], med_partition[i], small_partition[i]))
-    pool.map(solver_multi_threading, task)
+    if(type == 'all'):
+        for i in range(cores):
+            task.append((large_partition[i], med_partition[i], small_partition[i]))
+        pool.map(solver_multi_threading, task)
+    elif type == 'small':
+        for i in range(cores):
+            task.append(([], [], small_partition[i]))
+        pool.map(solver_multi_threading, task)
+    elif type == 'medium':
+        for i in range(cores):
+            task.append(([], med_partition[i], []))
+        pool.map(solver_multi_threading, task)
+    elif type == 'large':
+        for i in range(cores):
+            task.append((large_partition[i], [], []))
+        pool.map(solver_multi_threading, task)
