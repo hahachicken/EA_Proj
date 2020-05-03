@@ -1,6 +1,6 @@
 import networkx as nx
 from parse import read_input_file, write_output_file
-from utility import is_valid_network, average_pairwise_distance, average_pairwise_distance_fast
+from Utility import is_valid_network, average_pairwise_distance, average_pairwise_distance_fast
 import sys
 import time
 import multiprocessing

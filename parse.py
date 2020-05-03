@@ -2,7 +2,7 @@ import re
 import os
 
 import networkx as nx
-import utility
+import Utility
 
 def validate_file(path):
     """File must not exceed 100KB and must contain only numbers and spaces"""
