@@ -34,7 +34,7 @@ def solve(G, times = 100):
     t = time.time() - start_time
     print("total time takes:%d"%t)
     print(result[0])
-    return average_pairwise_distance_fast(result[0])
+    return result[0]
 
 
 
@@ -199,5 +199,5 @@ if __name__ == '__main__':
     G = read_input_file(path)
     print("Input success!")
     T = solve(G, 2)
-    print("Average  pairwise distance: {}".format(T)
-    write_output_file(T, 'out/test.out')
+    print("Average  pairwise distance: {}".format(average_pairwise_distance_fast(T)))
+    write_output_file('test.out',T)
