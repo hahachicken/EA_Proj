@@ -1,6 +1,6 @@
 import networkx as nx
 from parse import read_input_file, write_output_file
-from utility import is_valid_network, average_pairwise_distance
+from utility import is_valid_network, average_pairwise_distance, average_pairwise_distance_fast
 import sys
 
 
@@ -14,10 +14,41 @@ def solve(G):
     """
 
     # TODO: your code here!
-    pass
+    result = []
+    STs = genST(G)
+    for ST in STs:
+        result += [deletenode(ST,G)]
+    result = sorted(result, key=lambda G: average_pairwise_distance_fast(G))
+    return result[0]
+
+
+
+
+def deletenode(T,O):
+    oldcost = average_pairwise_distance_fast(T)
+    leaves = []
+    P = T.copy()
+    for node in T.nodes:
+        if T.degree[node] == 1:
+            leaves += [node]
+    leaves = sorted( leaves, key=lambda node: T.edges[ (list(T[node])[0], node) ]['weight'],reverse=True)
+    for i in range(len(leaves)):
+        G = T.copy()
+        G.remove_node(leaves[i])
+        if is_valid_network(O,G):
+            newcost = average_pairwise_distance_fast(G)
+            if newcost < oldcost:
+                P = deletenode(G,O)
+            else:
+                return P
+    return P
+
+
+
 
 def genST(G):
     output = []
+    outgraphs = []
     List = {G}
     for u, v in G.edges:
         G.edges[u, v]['property'] = 'normal'
@@ -30,7 +61,13 @@ def genST(G):
         List.remove(temp)
         MST.remove(tuple(temp.graph['MST']))
         Partition(temp, List, MST)
-    return output
+    for edges in output:
+        P = nx.Graph()
+        for edge in edges:
+            P.add_edge(edge[0], edge[1])
+            P.edges[edge[0], edge[1]]['weight'] = G.edges[edge[0], edge[1]]['weight']
+        outgraphs += [P]
+    return outgraphs
 
 
 
