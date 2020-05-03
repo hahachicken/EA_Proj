@@ -213,67 +213,61 @@ def find(G, i):
 
 # Usage: python3 solver.py
 
-def solver_multi_threading(task_set, deepth = 1000):
-    for i in task_set[0]:
-        path = "inputs/large-{}.in".format(i)
+def solver_multi_threading(i, deepth = 1):
+    if i <= 400 and i >=1:
+        index = i
+        path = "inputs/large-{}.in".format(index)
         G = read_input_file(path)
         print("Inport {} success!".format(path))
         T = solve(G, deepth)
         #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
-        write_output_file('outputs/large-{}.out'.format(i),T)
+        write_output_file('test_outputs/large-{}.out'.format(index),T)
 
-    for i in task_set[1]:
-        path = "inputs/medium-{}.in".format(i)
+    elif i >=401 and i <= 703:
+        index = i - 400
+        path = "inputs/medium-{}.in".format(index)
         G = read_input_file(path)
         print("Inport {} success!".format(path))
         T = solve(G, deepth)
         #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
-        write_output_file('outputs/medium-{}.out'.format(i),T)
+        write_output_file('test_outputs/medium-{}.out'.format(index),T)
     
-    for i in task_set[2]:
-        path = "inputs/small-{}.in".format(i)
+    elif i >=704 and i <= 1007:
+        index = i - 703 
+
+        if(index == 254):
+            return
+
+        path = "inputs/small-{}.in".format(index)
         G = read_input_file(path)
         print("Inport {} success!".format(path))
         T = solve(G,deepth)
         #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
-        write_output_file('outputs/small-{}.out'.format(i),T)
+        write_output_file('test_outputs/small-{}.out'.format(index),T)
 
 
 
 
 if __name__ == '__main__':
-    type = sys.argv[1]
+    tt = sys.argv[1]
     cores = multiprocessing.cpu_count()
     pool = multiprocessing.Pool(processes=cores)
-
-    large_partition = [[]for _ in range(cores)]
-    for i in range(1,401):
-        large_partition[i%cores].append(i)
-    
-    med_partition = [[]for _ in range(cores)]
-    for i in range(1,304):
-        med_partition[i%cores].append(i)
-    
-    small_partition = [[] for _ in range(cores)]
-    for i in range(1,304):
-        if i == 254:
-            continue
-        small_partition[i%cores].append(i)
     
     task = []
-    if(type == 'all'):
-        for i in range(cores):
-            task.append((large_partition[i], med_partition[i], small_partition[i]))
-        pool.map(solver_multi_threading, task)
-    elif type == 'small':
-        for i in range(cores):
-            task.append(([], [], small_partition[i]))
-        pool.map(solver_multi_threading, task)
-    elif type == 'medium':
-        for i in range(cores):
-            task.append(([], med_partition[i], []))
-        pool.map(solver_multi_threading, task)
-    elif type == 'large':
-        for i in range(cores):
-            task.append((large_partition[i], [], []))
-        pool.map(solver_multi_threading, task)
+    large_index = list(range(1, 304))
+    med_index = list(range(304, 704))
+    small_index = list(range(704, 1006))
+    
+    if tt == "all":
+        task = large_index + med_index + small_index
+    
+    elif tt == 'small':
+        task = small_index
+    
+    elif tt == 'medium':
+        task = med_index
+    
+    elif tt == 'large':
+        task = large_index
+
+    pool.map(solver_multi_threading, task)
