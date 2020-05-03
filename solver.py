@@ -3,7 +3,7 @@ from parse import read_input_file, write_output_file
 from utility import is_valid_network, average_pairwise_distance, average_pairwise_distance_fast
 import sys
 import time
-import threading
+import multiprocessing
 
 def solve(G, times = 100):
     """
@@ -205,8 +205,8 @@ def find(G, i):
 
 # Usage: python3 solver.py
 
-def solver_multi_threading(large_set, med_set, small_set, deepth = 2):
-    for i in large_set:
+def solver_multi_threading(task_set, deepth = 2):
+    for i in task_set[0]:
         path = "inputs/large-{}.in".format(i)
         G = read_input_file(path)
         print("Inport {} success!".format(path))
@@ -214,19 +214,19 @@ def solver_multi_threading(large_set, med_set, small_set, deepth = 2):
         #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
         write_output_file('outputs/large-{}.out'.format(i),T)
 
-    for i in med_set:
+    for i in task_set[1]:
         path = "inputs/medium-{}.in".format(i)
         G = read_input_file(path)
         print("Inport {} success!".format(path))
-        T = solve(G, l)
+        T = solve(G, deepth)
         #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
         write_output_file('outputs/medium-{}.out'.format(i),T)
     
-    for i in small_set:
+    for i in task_set[2]:
         path = "inputs/small-{}.in".format(i)
         G = read_input_file(path)
         print("Inport {} success!".format(path))
-        T = solve(G,l)
+        T = solve(G,deepth)
         #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
         write_output_file('outputs/small-{}.out'.format(i),T)
 
@@ -235,28 +235,22 @@ def solver_multi_threading(large_set, med_set, small_set, deepth = 2):
 
 if __name__ == '__main__':
     l = 2
-    num_threads = 8
-    
-    large_partition = [[]for _ in range(num_threads)]
-    for i in range(1,17):
-        large_partition[i%num_threads].append(i)
-    
-    med_partition = [[]for _ in range(num_threads)]
-    for i in range(1,17):
-        med_partition[i%num_threads].append(i)
-    
-    small_partition = [[] for _ in range(num_threads)]
-    for i in range(1,17):
-        small_partition[i%num_threads].append(i)
-    
-    thread_pool = []
-    for i in range(num_threads):
-        thread_pool.append(
-            threading.Thread(target = solver_multi_threading, args = [large_partition[i], med_partition[i], small_partition[i]], name='th-{}'.format(i))
-            )
+    cores = multiprocessing.cpu_count()
+    pool = multiprocessing.Pool(processes=cores)
 
-    for th in thread_pool:
-        th.start()
-
-    for th in thread_pool:
-        th.join()
+    large_partition = [[]for _ in range(cores)]
+    for i in range(1,17):
+        large_partition[i%cores].append(i)
+    
+    med_partition = [[]for _ in range(cores)]
+    for i in range(1,17):
+        med_partition[i%cores].append(i)
+    
+    small_partition = [[] for _ in range(cores)]
+    for i in range(1,17):
+        small_partition[i%cores].append(i)
+    
+    task = []
+    for i in range(cores):
+        task.append((large_partition[i], med_partition[i], small_partition[i]))
+    pool.map(solver_multi_threading, task)
