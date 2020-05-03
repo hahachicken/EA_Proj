@@ -4,7 +4,7 @@ from utility import is_valid_network, average_pairwise_distance, average_pairwis
 import sys
 import time
 
-def solve(G):
+def solve(G, times = 100):
     """
     Args:
         G: networkx.Graph
@@ -15,20 +15,21 @@ def solve(G):
 
     # TODO: your code here!
     start_time = time.time()
-    times = 100
 
     result = []
     STs = genST(G)
+    print("STs gen!")
     i = 0
     for ST in STs:
         if i < times:
             i += 1
             result += [deletenode(ST,G)]
-    result = sorted(result, key=lambda G: average_pairwise_distance_fast(G))
-
+    print("min deo-tree gen!")
+#    result = sorted(result, key=lambda G: average_pairwise_distance_fast(G))
+    result_val = [average_pairwise_distance_fast(G) for G in result]
     t = time.time() - start_time
     print("total time takes:%d"%t)
-    return result[0]
+    return max(result_val)
 
 
 
@@ -188,11 +189,11 @@ def KruskalMST(P):
 
 # Usage: python3 solver.py test.in
 
-# if __name__ == '__main__':
-#     assert len(sys.argv) == 2
-#     path = sys.argv[1]
-#     G = read_input_file(path)
-#     T = solve(G)
-#     assert is_valid_network(G, T)
-#     print("Average  pairwise distance: {}".format(average_pairwise_distance(T)))
-#     write_output_file(T, 'out/test.out')
+if __name__ == '__main__':
+    path = "self_test/0.in"
+    G = read_input_file(path)
+    print("Input success!")
+    T = solve(G, 2)
+    assert is_valid_network(G, T)
+    print("Average  pairwise distance: {}".format(average_pairwise_distance(T)))
+    write_output_file(T, 'out/test.out')
