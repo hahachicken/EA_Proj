@@ -15,11 +15,15 @@ def solve(G):
 
     # TODO: your code here!
     start_time = time.time()
+    times = 100
 
     result = []
     STs = genST(G)
+    i = 0
     for ST in STs:
-        result += [deletenode(ST,G)]
+        if i < times:
+            i += 1
+            result += [deletenode(ST,G)]
     result = sorted(result, key=lambda G: average_pairwise_distance_fast(G))
 
     t = time.time() - start_time
