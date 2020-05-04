@@ -84,6 +84,7 @@ def starter(T,O):
         return delete3node(GraphArray[:3], O)
 
 def delete3node_S(GraphArray,O):
+    newGraphArray = GraphArray.copy()
     for T in GraphArray:
         oldcost = average_pairwise_distance_fast(T)
         leaves = []
@@ -100,15 +101,16 @@ def delete3node_S(GraphArray,O):
                     cnt += 1
                     newcost = average_pairwise_distance_fast(G)
                     if newcost < oldcost:
-                        GraphArray += [G]
-    GraphArray = sorted(GraphArray, key=lambda GraphArray: average_pairwise_distance_fast(T))
-    if len(GraphArray) == 2:
-        return GraphArray[0]
+                        newGraphArray += [G]
+    newGraphArray = sorted( newGraphArray, key=lambda tree: average_pairwise_distance_fast(tree))
+    if len(newGraphArray) == 2:
+        return newGraphArray[0]
     else:
-        GraphArray = GraphArray[:3]
-        delete3node(GraphArray,O)
+        newGraphArray = newGraphArray[:3]
+        delete3node(newGraphArray,O)
 
 def delete3node(GraphArray,O):
+    newGraphArray = GraphArray.copy()
     for T in GraphArray:
         oldcost = average_pairwise_distance_fast(T)
         leaves = []
@@ -125,13 +127,13 @@ def delete3node(GraphArray,O):
                     cnt += 1
                     newcost = average_pairwise_distance_fast(G)
                     if newcost < oldcost:
-                        GraphArray += [G]
-    GraphArray = sorted(GraphArray, key=lambda GraphArray: average_pairwise_distance_fast(T))
-    if len(GraphArray) == 3:
-        return GraphArray[0]
+                        newGraphArray += [G]
+    newGraphArray = sorted( newGraphArray, key=lambda tree: average_pairwise_distance_fast(tree))
+    if len(newGraphArray) == 3:
+        return newGraphArray[0]
     else:
-        GraphArray = GraphArray[:3]
-        delete3node(GraphArray,O)
+        newGraphArray = newGraphArray[:3]
+        delete3node(newGraphArray,O)
 
 def genST(G, depth):
     output = []
