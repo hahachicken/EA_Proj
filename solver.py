@@ -274,7 +274,7 @@ def find(G, i):
 
 # Usage: python3 solver.py
 
-def solver_multi_threading(i, depth = 200):
+def solver_multi_threading(i, depth = 1000):
     if i <= 0 or i >=1007:
         return
     if i >= 1 and i <= 303:
