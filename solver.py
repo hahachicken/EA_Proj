@@ -274,7 +274,7 @@ def find(G, i):
 
 # Usage: python3 solver.py
 
-def solver_multi_threading(i, depth = 1000):
+def solver_multi_threading(i, depth = 200):
     if i <= 0 or i >=1007:
         return
     if i >= 1 and i <= 303:
@@ -331,14 +331,15 @@ def p_main():
         (l, r) = line.split()
         (n, i) = l.split('-')
         i = int(i)
-        if(int(r) > 0):
+        print(n,i,r)
+        if(int(r) > 10):
             #print(l,r)
             if n == "small":
                 index = i
             if n == "medium":
-                index = i - 304
+                index = i + 304
             if n == "large":
-                index = i - 606
+                index = i + 606
             task.append(index)
 
     cores = multiprocessing.cpu_count()
