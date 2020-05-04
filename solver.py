@@ -62,6 +62,29 @@ def deletenode(T,O):
                 return P
     return P
 
+def delete3node(GraphArray,O):
+    GraphArray
+
+    for T in GraphArray:
+        oldcost = average_pairwise_distance_fast(T)
+        leaves = []
+        P = T.copy()
+        for node in T.nodes:
+            if T.degree[node] == 1:
+                leaves += [node]
+        leaves = sorted( leaves, key=lambda node: T.edges[ (list(T[node])[0], node) ]['weight'],reverse=True)
+        cnt = 0
+        for i in range(len(leaves)):
+            if cnt < 3:
+                G = T.copy()
+                G.remove_node(leaves[i])
+                if is_valid_network(O,G):
+                    cnt += 1
+                    newcost = average_pairwise_distance_fast(G)
+                    if newcost < oldcost:
+                        childtrees += [G]
+    childtrees = sorted( tree, key=lambda tree: average_pairwise_distance_fast(T))
+
 
 
 
@@ -221,7 +244,7 @@ def solver_multi_threading(i, depth = 1, width = 1):
         index = i - 400
         nn = "medium"
     elif i >=704 and i <= 1007:
-        index = i - 703 
+        index = i - 703
         if(index == 254):
             return
         nn = "small"
@@ -238,21 +261,21 @@ if __name__ == '__main__':
     tt = sys.argv[1]
     cores = multiprocessing.cpu_count()
     pool = multiprocessing.Pool(processes=cores)
-    
+
     task = []
     large_index = list(range(1, 401))
     med_index = list(range(401, 704))
     small_index = list(range(704, 1006))
-    
+
     if tt == "all":
         task = large_index + med_index + small_index
-    
+
     elif tt == 'small':
         task = small_index
-    
+
     elif tt == 'medium':
         task = med_index
-    
+
     elif tt == 'large':
         task = large_index
 
