@@ -13,23 +13,14 @@ def solve(G, depth):
     Returns:
         T: networkx.Graph
     """
-
-    # TODO: your code here!
-    #start_time = time.time()
-
     result = []
     STs = genST(G, depth)
     print("STs gen!")
     i = 0
-
     for ST in STs:
         weight = 0
         for edge in ST.edges:
             weight += ST.edges[edge]['weight']
-        #print(ST.edges)
-        #print(weight)
-        #print(nx.is_tree(ST))
-    #print("__________________________________")
     for ST in STs:
         if i < depth:
             i += 1
