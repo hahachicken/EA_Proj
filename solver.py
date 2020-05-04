@@ -213,39 +213,25 @@ def find(G, i):
 
 # Usage: python3 solver.py
 
-def solver_multi_threading(i, deepth = 1):
-    if i <= 400 and i >=1:
+def solver_multi_threading(i, depth = 1, width = 1):
+    if i >= 1 and i <= 400:
         index = i
-        path = "inputs/large-{}.in".format(index)
-        G = read_input_file(path)
-        print("Inport {} success!".format(path))
-        T = solve(G, deepth)
-        #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
-        write_output_file('test_outputs/large-{}.out'.format(index),T)
-
+        nn = "large"
     elif i >=401 and i <= 703:
         index = i - 400
-        path = "inputs/medium-{}.in".format(index)
-        G = read_input_file(path)
-        print("Inport {} success!".format(path))
-        T = solve(G, deepth)
-        #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
-        write_output_file('test_outputs/medium-{}.out'.format(index),T)
-    
+        nn = "medium"
     elif i >=704 and i <= 1007:
         index = i - 703 
-
         if(index == 254):
             return
+        nn = "small"
 
-        path = "inputs/small-{}.in".format(index)
-        G = read_input_file(path)
-        print("Inport {} success!".format(path))
-        T = solve(G,deepth)
-        #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
-        write_output_file('test_outputs/small-{}.out'.format(index),T)
-
-
+    path = "inputs/{}-{}.in".format(nn, index)
+    G = read_input_file(path)
+    print("Inport {} success!".format(path))
+    T = solve(G, depth)
+    #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
+    write_output_file('t/{}-{}.out'.format(nn, index),T)
 
 
 if __name__ == '__main__':
@@ -254,8 +240,8 @@ if __name__ == '__main__':
     pool = multiprocessing.Pool(processes=cores)
     
     task = []
-    large_index = list(range(1, 304))
-    med_index = list(range(304, 704))
+    large_index = list(range(1, 401))
+    med_index = list(range(401, 704))
     small_index = list(range(704, 1006))
     
     if tt == "all":

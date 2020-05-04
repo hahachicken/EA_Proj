@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.2.4)  3 MAY 2020 11:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.2.4)  3 MAY 2020 19:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/weixiaozhan/College/2.2UCB/EA/Proj/Tex/reflection.tex
-(/Users/weixiaozhan/College/2.2UCB/EA/Proj/Tex/reflection.tex
+**/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.tex
+(/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.tex
 LaTeX2e <2019-10-01> patch level 3
 (/usr/local/texlive/2019/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2019/10/25 v1.4k Standard LaTeX document class
@@ -68,7 +68,7 @@ Package: titling 2009/09/04 v2.1d maketitle typesetting
 \thanksmarkwidth=\skip43
 \thanksmargin=\skip44
 \droptitle=\skip45
-) (/Users/weixiaozhan/College/2.2UCB/EA/Proj/Tex/reflection.aux)
+) (/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.aux)
 \openout1 = `reflection.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
@@ -142,22 +142,29 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 15.
 [1
 
-{/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2
+{/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 44.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 44.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 44.
+ [2
 
-] (/Users/weixiaozhan/College/2.2UCB/EA/Proj/Tex/reflection.aux) ) 
+] [3] (/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.aux) ) 
 Here is how much of TeX's memory you used:
- 1599 strings out of 492162
- 22210 string characters out of 6125293
- 92419 words of memory out of 5000000
- 5996 multiletter control sequences out of 15000+600000
- 5756 words of font info for 21 fonts, out of 8000000 for 9000
+ 1617 strings out of 492162
+ 22408 string characters out of 6125293
+ 95419 words of memory out of 5000000
+ 6008 multiletter control sequences out of 15000+600000
+ 8501 words of font info for 30 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 30i,6n,23p,276b,191s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on /Users/weixiaozhan/College/2.2UCB/EA/Proj/Tex/reflection.pdf (2 pages, 40814 bytes).
+ 30i,6n,23p,263b,191s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb>
+Output written on /Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.pdf (3 pages, 59867 bytes).
 PDF statistics:
- 23 PDF objects out of 1000 (max. 8388607)
- 15 compressed objects within 1 object stream
+ 34 PDF objects out of 1000 (max. 8388607)
+ 23 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
