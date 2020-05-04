@@ -77,17 +77,43 @@ def starter(T,O):
             if newcost < oldcost:
                 GraphArray += [G]
 
-    if len(GraphArray) <= 3:
+    if len(GraphArray) < 2:
         return deletenode(T,O)
+    else if len(GraphArray) == 2:
+        return elete3node_S(GraphArray,O)
     else:
         return delete3node(GraphArray[:3], O)
+
+def delete3node_S(GraphArray,O):
+    for T in GraphArray:
+        oldcost = average_pairwise_distance_fast(T)
+        leaves = []
+        P = T.copy()
+        for node in T.nodes:
+            if T.degree[node] == 1:
+                leaves += [node]
+        leaves = sorted( leaves, key=lambda node: T.edges[ (list(T[node])[0], node) ]['weight'],reverse=True)
+        cnt = 0
+        for i in range(len(leaves)):
+            if cnt < 3:
+                G = T.copy()
+                G.remove_node(leaves[i])
+                if is_valid_network(O,G):
+                    cnt += 1
+                    newcost = average_pairwise_distance_fast(G)
+                    if newcost < oldcost:
+                        GraphArray += [G]
+    GraphArray = sorted( tree, key=lambda tree: average_pairwise_distance_fast(T))
+    if len(GraphArray) == 2:
+        return GraphArray[0]
+    else:
+        GraphArray = GraphArray[:3]
+        delete3node(GraphArray,O)
 
 
 
 
 def delete3node(GraphArray,O):
-
-
     for T in GraphArray:
         oldcost = average_pairwise_distance_fast(T)
         leaves = []
