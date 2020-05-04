@@ -274,21 +274,8 @@ def find(G, i):
 
 # Usage: python3 solver.py
 
-def solver_multi_threading(i, depth = 1000):
-    if i <= 0 or i >=1007:
-        return
-    if i >= 1 and i <= 303:
-        index = i
-        if(index == 254):
-            return
-        typ = "small"
-    elif i >= 304 and i <= 606:
-        index = i - 400
-        typ = "medium"
-    elif i >= 607 and i <= 1007:
-        index = i - 703
-        typ = "large"
-    path = "inputs/{}-{}.in".format(typ, index)
+def solver_multi_threading(i, depth = 1):
+    path = "inputs/{}-{}.in".format(i[0], i[1])
     
     G = read_input_file(path)
     print("Input  {} success!".format(path))
@@ -296,7 +283,7 @@ def solver_multi_threading(i, depth = 1000):
     #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
     
     print("Output {} success!".format(path))
-    write_output_file("outputs/{}-{}.out".format(typ, index), T)
+    write_output_file("outputs/{}-{}.out".format(i[0], i[1]), T)
 
 def main():
     tt = sys.argv[1]
@@ -333,14 +320,7 @@ def p_main():
         i = int(i)
         print(n,i,r)
         if(int(r) > 10):
-            #print(l,r)
-            if n == "small":
-                index = i
-            if n == "medium":
-                index = i + 304
-            if n == "large":
-                index = i + 606
-            task.append(index)
+            task.append((n, i))
 
     cores = multiprocessing.cpu_count()
     pool = multiprocessing.Pool(processes=cores)
