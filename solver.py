@@ -332,7 +332,7 @@ def p_main():
     task = []
     for l in lines:
         if l[0] == "l":
-            index = int(l[7:])
+            index = int(l[6:])
         if l[0] == "m":
             index = int(l[8:]) + 400
         if l[0] == "s":
