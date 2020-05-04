@@ -282,17 +282,17 @@ def find(G, i):
 # Usage: python3 solver.py
 
 def solver_multi_threading(i, depth = 10):
-    if i >= 1 and i <= 400:
+    if i >= 1 and i <= 303:
         index = i
-        nn = "large"
-    elif i >=401 and i <= 703:
-        index = i - 400
-        nn = "medium"
-    elif i >=704 and i <= 1007:
-        index = i - 703
         if(index == 254):
             return
         nn = "small"
+    elif i >= 304 and i <= 606:
+        index = i - 400
+        nn = "medium"
+    elif i >= 607 and i <= 1007:
+        index = i - 703
+        nn = "large"
 
     path = "inputs/{}-{}.in".format(nn, index)
     G = read_input_file(path)
@@ -308,9 +308,9 @@ def main():
     pool = multiprocessing.Pool(processes=cores)
 
     task = []
-    large_index = list(range(1, 401))
-    med_index = list(range(401, 704))
-    small_index = list(range(704, 1006))
+    small_index = list(range(1, 304))
+    med_index = list(range(304, 607))
+    large_index = list(range(607, 1007))
 
     if tt == "all":
         task = large_index + med_index + small_index
@@ -327,19 +327,21 @@ def main():
     pool.map(solver_multi_threading, task)
 
 def p_main():
-    f = open("focus.txt", 'r')
+    path = sys.argv[1]
+    f = open(path, 'r')
     lines = f.readlines()
     task = []
-    for l in lines:
-        if l[0] == "l":
-            index = int(l[6:])
-        if l[0] == "m":
-            index = int(l[8:]) + 400
-        if l[0] == "s":
-            index = int(l[6:]) + 703
-
-        task.append(index)
-
+    for i in range(len(lines)):
+        (l, r) = lines[i].split()
+        print(l,r)
+        if(int(r) > 0):
+            if l[0] == "s":
+                index = i
+            if l[0] == "m":
+                index = i - 304
+            if l[0] == "l":
+                index = i - 606
+            task.append(index)
 
     cores = multiprocessing.cpu_count()
     pool = multiprocessing.Pool(processes=cores)
