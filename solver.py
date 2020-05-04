@@ -33,7 +33,7 @@ def solve(G, times = 100):
     for ST in STs:
         if i < times:
             i += 1
-            result += [deletenode(ST,G)]
+            result += [starter(ST,G)]
     print("MDT gen!")
     result = sorted(result, key=lambda G: average_pairwise_distance_fast(G))
     #t = time.time() - start_time
