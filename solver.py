@@ -5,7 +5,7 @@ import sys
 import time
 import multiprocessing
 
-def solve(G, depth = 100):
+def solve(G, depth):
     """
     Args:
         G: networkx.Graph
@@ -284,25 +284,28 @@ def find(G, i):
 # Usage: python3 solver.py
 
 def solver_multi_threading(i, depth = 10):
+    typ = ""
     if i >= 1 and i <= 303:
         index = i
         if(index == 254):
             return
-        nn = "small"
+        typ = "small"
     elif i >= 304 and i <= 606:
         index = i - 400
-        nn = "medium"
+        typ = "medium"
     elif i >= 607 and i <= 1007:
         index = i - 703
-        nn = "large"
+        typ = "large"
 
-    path = "inputs/{}-{}.in".format(nn, index)
+    path = "inputs/{}-{}.in".format(typ, index)
+    
     G = read_input_file(path)
-    print("Inport {} success!".format(path))
+    print("Input  {} success!".format(path))
     T = solve(G, depth)
     #print("Average pairwise distance: {}".format(average_pairwise_distance_fast(T)))
-    write_output_file('t/{}-{}.out'.format(nn, index),T)
-
+    
+    print("Output {} success!".format(path))
+    write_output_file("outputs/{}-{}.out".format(typ, index), T)
 
 def main():
     tt = sys.argv[1]
@@ -333,15 +336,17 @@ def p_main():
     f = open(path, 'r')
     lines = f.readlines()
     task = []
-    for i in range(len(lines)):
-        (l, r) = lines[i].split()
-        print(l,r)
+    for line in lines:
+        (l, r) = line.split()
+        (n, i) = l.split('-')
+        i = int(i)
         if(int(r) > 0):
-            if l[0] == "s":
+            #print(l,r)
+            if n == "small":
                 index = i
-            if l[0] == "m":
+            if n == "medium":
                 index = i - 304
-            if l[0] == "l":
+            if n == "large":
                 index = i - 606
             task.append(index)
 
