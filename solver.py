@@ -302,7 +302,7 @@ def solver_multi_threading(i, depth = 10):
     write_output_file('t/{}-{}.out'.format(nn, index),T)
 
 
-if __name__ == '__main__':
+def main():
     tt = sys.argv[1]
     cores = multiprocessing.cpu_count()
     pool = multiprocessing.Pool(processes=cores)
@@ -325,3 +325,28 @@ if __name__ == '__main__':
         task = large_index
 
     pool.map(solver_multi_threading, task)
+
+def p_main():
+    f = open("focus.txt", 'r')
+    lines = f.readlines()
+    task = []
+    for l in lines:
+        if l[0] == "l":
+            index = int(l[7:])
+        if l[0] == "m":
+            index = int(l[8:]) + 400
+        if l[0] == "s":
+            index = int(l[6:]) + 703
+
+        task.append(index)
+
+
+    cores = multiprocessing.cpu_count()
+    pool = multiprocessing.Pool(processes=cores)
+    pool.map(solver_multi_threading, task)
+
+
+
+
+if __name__ == "__main__":
+    p_main()
