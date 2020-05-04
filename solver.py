@@ -5,7 +5,7 @@ import sys
 import time
 import multiprocessing
 
-def solve(G, times = 100):
+def solve(G, depth = 100):
     """
     Args:
         G: networkx.Graph
@@ -18,7 +18,7 @@ def solve(G, times = 100):
     #start_time = time.time()
 
     result = []
-    STs = genST(G,times)
+    STs = genST(G, depth)
     print("STs gen!")
     i = 0
 
@@ -31,7 +31,7 @@ def solve(G, times = 100):
         #print(nx.is_tree(ST))
     #print("__________________________________")
     for ST in STs:
-        if i < times:
+        if i < depth:
             i += 1
             result += [starter(ST,G)]
     print("MDT gen!")
@@ -64,7 +64,6 @@ def starter(T,O):
     GraphArray = []
     oldcost = average_pairwise_distance_fast(T)
     leaves = []
-    P = T.copy()
     for node in T.nodes:
         if T.degree[node] == 1:
             leaves += [node]
@@ -79,16 +78,16 @@ def starter(T,O):
 
     if len(GraphArray) < 2:
         return deletenode(T,O)
-    else if len(GraphArray) == 2:
-        return elete3node_S(GraphArray,O)
+    elif len(GraphArray) == 2:
+        return delete3node_S(GraphArray,O)
     else:
         return delete3node(GraphArray[:3], O)
 
 def delete3node_S(GraphArray,O):
+    newGraphArray = GraphArray.copy()
     for T in GraphArray:
         oldcost = average_pairwise_distance_fast(T)
         leaves = []
-        P = T.copy()
         for node in T.nodes:
             if T.degree[node] == 1:
                 leaves += [node]
@@ -102,22 +101,19 @@ def delete3node_S(GraphArray,O):
                     cnt += 1
                     newcost = average_pairwise_distance_fast(G)
                     if newcost < oldcost:
-                        GraphArray += [G]
-    GraphArray = sorted( GraphArray, key=lambda tree: average_pairwise_distance_fast(T))
-    if len(GraphArray) == 2:
-        return GraphArray[0]
+                        newGraphArray += [G]
+    newGraphArray = sorted( newGraphArray, key=lambda tree: average_pairwise_distance_fast(tree))
+    if len(newGraphArray) == 2:
+        return newGraphArray[0]
     else:
-        GraphArray = GraphArray[:3]
-        delete3node(GraphArray,O)
-
-
-
+        newGraphArray = newGraphArray[:3]
+        delete3node(newGraphArray,O)
 
 def delete3node(GraphArray,O):
+    newGraphArray = GraphArray.copy()
     for T in GraphArray:
         oldcost = average_pairwise_distance_fast(T)
         leaves = []
-        P = T.copy()
         for node in T.nodes:
             if T.degree[node] == 1:
                 leaves += [node]
@@ -131,17 +127,15 @@ def delete3node(GraphArray,O):
                     cnt += 1
                     newcost = average_pairwise_distance_fast(G)
                     if newcost < oldcost:
-                        GraphArray += [G]
-    GraphArray = sorted( GraphArray, key=lambda tree: average_pairwise_distance_fast(T))
-    if len(GraphArray) == 3:
-        return GraphArray[0]
+                        newGraphArray += [G]
+    newGraphArray = sorted( newGraphArray, key=lambda tree: average_pairwise_distance_fast(tree))
+    if len(newGraphArray) == 3:
+        return newGraphArray[0]
     else:
-        GraphArray = GraphArray[:3]
-        delete3node(GraphArray,O)
+        newGraphArray = newGraphArray[:3]
+        delete3node(newGraphArray,O)
 
-
-
-def genST(G, times):
+def genST(G, depth):
     output = []
     outgraphs = []
     for u, v in G.edges:
@@ -149,7 +143,7 @@ def genST(G, times):
     List = {G}
     G.graph['MST'] = KruskalMST(G)
     MST = {tuple(G.graph['MST'])}
-    if times == -1:
+    if depth == -1:
         while len(MST) != 0:
             temp = min(List, key = lambda g: g.graph['cost'])
             output.append(temp.graph['MST'])
@@ -157,7 +151,7 @@ def genST(G, times):
             MST.remove(tuple(temp.graph['MST']))
             Partition(temp, List, MST)
     else:
-        while len(MST) != 0 and len(output) < times:
+        while len(MST) != 0 and len(output) < depth:
             temp = min(List, key = lambda g: g.graph['cost'])
             output.append(temp.graph['MST'])
             List.remove(temp)
@@ -289,7 +283,7 @@ def find(G, i):
 
 # Usage: python3 solver.py
 
-def solver_multi_threading(i, depth = 1, width = 1):
+def solver_multi_threading(i, depth = 10):
     if i >= 1 and i <= 400:
         index = i
         nn = "large"
@@ -310,7 +304,7 @@ def solver_multi_threading(i, depth = 1, width = 1):
     write_output_file('t/{}-{}.out'.format(nn, index),T)
 
 
-if __name__ == '__main__':
+def main():
     tt = sys.argv[1]
     cores = multiprocessing.cpu_count()
     pool = multiprocessing.Pool(processes=cores)
@@ -333,3 +327,28 @@ if __name__ == '__main__':
         task = large_index
 
     pool.map(solver_multi_threading, task)
+
+def p_main():
+    f = open("focus.txt", 'r')
+    lines = f.readlines()
+    task = []
+    for l in lines:
+        if l[0] == "l":
+            index = int(l[6:])
+        if l[0] == "m":
+            index = int(l[8:]) + 400
+        if l[0] == "s":
+            index = int(l[6:]) + 703
+
+        task.append(index)
+
+
+    cores = multiprocessing.cpu_count()
+    pool = multiprocessing.Pool(processes=cores)
+    pool.map(solver_multi_threading, task)
+
+
+
+
+if __name__ == "__main__":
+    p_main()
