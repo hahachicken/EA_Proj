@@ -274,7 +274,7 @@ def find(G, i):
 
 # Usage: python3 solver.py
 
-def solver_multi_threading(i, depth = 1):
+def solver_multi_threading(i, depth = 1000):
     path = "inputs/{}-{}.in".format(i[0], i[1])
     
     G = read_input_file(path)
