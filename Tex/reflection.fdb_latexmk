@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1588558773 "/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.tex" "/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.pdf" "reflection" 1588558773
-  "/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.aux" 1588558773 8 a94a2480d3289e625eea47cd1b285758 ""
-  "/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.tex" 1588558772 3606 a683bad50104685d2386c0eb0f2b772e ""
+["pdflatex"] 1588572810 "/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.tex" "/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.pdf" "reflection" 1588572810
+  "/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.aux" 1588572810 8 a94a2480d3289e625eea47cd1b285758 ""
+  "/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.tex" 1588572809 3606 0910e6b06ed1d8c53af4e57fe8cddd11 ""
   "/usr/local/texlive/2019/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm" 1136768653 1524 4414a8315f39513458b80dfc63bff03a ""
@@ -39,11 +39,11 @@
   "/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1579197860 4737693 518429b8d4e943df94d98cf4361af9be ""
   "/usr/local/texlive/2019/texmf-var/web2c/pdftex/pdflatex.fmt" 1580837896 4294832 65fdfa01a3345a58be7f9a706a091f59 ""
   "/usr/local/texlive/2019/texmf.cnf" 1557341546 577 d150fef99ac436ad1156e86b0892f6ef ""
-  "reflection.aux" 1588558773 8 a94a2480d3289e625eea47cd1b285758 "pdflatex"
-  "reflection.tex" 1588558772 3606 a683bad50104685d2386c0eb0f2b772e ""
+  "reflection.aux" 1588572810 8 a94a2480d3289e625eea47cd1b285758 "pdflatex"
+  "reflection.tex" 1588572809 3606 0910e6b06ed1d8c53af4e57fe8cddd11 ""
   (generated)
+  "reflection.aux"
+  "/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.pdf"
   "reflection.log"
   "/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.log"
-  "/Users/weixiaozhan/College/2.2UCB/EA/proj/Tex/reflection.pdf"
-  "reflection.aux"
   "reflection.pdf"
