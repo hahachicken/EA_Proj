@@ -79,7 +79,7 @@ def starter(T,O):
 
     if len(GraphArray) < 2:
         return deletenode(T,O)
-    else if len(GraphArray) == 2:
+    elif len(GraphArray) == 2:
         return elete3node_S(GraphArray,O)
     else:
         return delete3node(GraphArray[:3], O)
