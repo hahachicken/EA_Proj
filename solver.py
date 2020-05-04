@@ -98,7 +98,7 @@ def delete3node_S(GraphArray,O):
         return newGraphArray[0]
     else:
         newGraphArray = newGraphArray[:3]
-        delete3node(newGraphArray,O)
+        return delete3node(newGraphArray,O)
 
 def delete3node(GraphArray,O):
     newGraphArray = GraphArray.copy()
@@ -124,7 +124,7 @@ def delete3node(GraphArray,O):
         return newGraphArray[0]
     else:
         newGraphArray = newGraphArray[:3]
-        delete3node(newGraphArray,O)
+        return delete3node(newGraphArray,O)
 
 def genST(G, depth):
     output = []
@@ -274,8 +274,9 @@ def find(G, i):
 
 # Usage: python3 solver.py
 
-def solver_multi_threading(i, depth = 10):
-    typ = ""
+def solver_multi_threading(i, depth = 1000):
+    if i <= 0 or i >=1007:
+        return
     if i >= 1 and i <= 303:
         index = i
         if(index == 254):
@@ -287,7 +288,6 @@ def solver_multi_threading(i, depth = 10):
     elif i >= 607 and i <= 1007:
         index = i - 703
         typ = "large"
-
     path = "inputs/{}-{}.in".format(typ, index)
     
     G = read_input_file(path)
@@ -344,9 +344,6 @@ def p_main():
     cores = multiprocessing.cpu_count()
     pool = multiprocessing.Pool(processes=cores)
     pool.map(solver_multi_threading, task)
-
-
-
 
 if __name__ == "__main__":
     p_main()
