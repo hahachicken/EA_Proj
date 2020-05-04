@@ -103,7 +103,7 @@ def delete3node_S(GraphArray,O):
                     newcost = average_pairwise_distance_fast(G)
                     if newcost < oldcost:
                         GraphArray += [G]
-    GraphArray = sorted( tree, key=lambda tree: average_pairwise_distance_fast(T))
+    GraphArray = sorted( GraphArray, key=lambda tree: average_pairwise_distance_fast(T))
     if len(GraphArray) == 2:
         return GraphArray[0]
     else:
@@ -132,7 +132,7 @@ def delete3node(GraphArray,O):
                     newcost = average_pairwise_distance_fast(G)
                     if newcost < oldcost:
                         GraphArray += [G]
-    GraphArray = sorted( tree, key=lambda tree: average_pairwise_distance_fast(T))
+    GraphArray = sorted( GraphArray, key=lambda tree: average_pairwise_distance_fast(T))
     if len(GraphArray) == 3:
         return GraphArray[0]
     else:
